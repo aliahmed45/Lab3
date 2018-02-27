@@ -13,6 +13,8 @@
  */
 
 
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+
 import java.util.*;
 import java.io.*;
 
@@ -20,6 +22,7 @@ public class Main {
 	
 	// static variables and constants only here.
 	public static Set<String> dictionary;
+	public static ArrayList<String> ladder = new ArrayList<>();
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -44,6 +47,7 @@ public class Main {
 		wordNode first = new wordNode(start, end, dictionary);
 		while(!first.wordQueue.isEmpty()) {
 		    wordNode tmp = new wordNode(first.wordQueue.poll(), end, dictionary);
+		    tmp.parentNode = first;
             wordTree.add(tmp);
         }
         /* Beginning of BFS tree */
@@ -56,11 +60,22 @@ public class Main {
 				}
 			}else {
 				wordNode tmp = new wordNode(wordTree.get(i).wordQueue.poll(), end, dictionary);
-				wordTree.add(tmp);
+				tmp.parentNode = wordTree.get(i);
+				System.out.println(tmp.parentNode.currentWord);
+                wordTree.add(tmp);
+				if(tmp.flag){
+				    break;
+                }
 			}
-
         }
-
+        wordNode tmp = wordTree.get(i);
+        System.out.println("End Word:" + tmp.currentWord);
+        System.out.println("Word before: " + tmp.parentNode.currentWord);
+        while(tmp.parentNode != first){
+            ladder.add(tmp.currentWord);
+            tmp = wordTree.get(wordTree.indexOf(tmp.parentNode));
+        }
+        printLadder(ladder);
 	}
 	
 	public static void initialize() {
@@ -102,7 +117,7 @@ public class Main {
     
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		
+        System.out.println(ladder);
 	}
 	// TODO
 	// Other private static methods here
