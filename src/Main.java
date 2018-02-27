@@ -66,8 +66,9 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// If ladder is empty, return list with just start and end.
 		// TODO some code
-		Set<String> dict = makeDictionary();
+		//Set<String> dict = makeDictionary();
 		// TODO more code
+		DFSTree dfsTree = new DFSTree(start, end, dictionary);
 		
 		return null; // replace this line later with real return
 	}
