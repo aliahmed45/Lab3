@@ -23,10 +23,10 @@ public class wordNode{
                 //System.out.println(currCharInd);
                 System.out.println("Beginning Word is: " + start);
                 findNextWord(start, end);
-                System.out.println("End of this Loop \n");
+                System.out.println();
         }
 
-        private void findNextWord(String word, String end){
+        public void findNextWord(String word, String end){
                 if(word.equals(end)){
                     return;
                 }
@@ -39,12 +39,16 @@ public class wordNode{
                         tmp2 = tmp2.toUpperCase();
                         if (dictionary.contains(tmp2)) {
                             //System.out.println("Positive Dictionary Match");
+                            if(!vistedWord.contains(tmp2)) {
+                                vistedWord.add(tmp2);
+                                wordQueue.add(tmp2.toLowerCase());
+                            }
                             if(tmp2.equals(end)){
                                 System.out.println("Made it to the end.");
                                 currentWord = end;
                                 return;
                             }
-                            wordQueue.add(tmp2.toLowerCase());
+
                         }
                     }
                     charNum = charNum + 1;

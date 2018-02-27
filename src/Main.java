@@ -37,20 +37,30 @@ public class Main {
 		initialize();
 		// TODO methods to read in words, output ladder
 
-		String start = "money";
-		String end   = "smart";
+		String start = "smart";
+		String end   = "money";
+		dictionary.remove(start.toUpperCase());
+		ArrayList<wordNode> wordTree = new ArrayList<>();
 		wordNode first = new wordNode(start, end, dictionary);
-		wordNode second = new wordNode();
-
-		while(!first.currentWord.equals(end)) {
-
-			if (!first.wordQueue.isEmpty()) {
-				second = new wordNode(first.wordQueue.poll(), end, dictionary);
-
-			} else{
-				second = new wordNode(second.wordQueue.poll(), end, dictionary);
+		while(!first.wordQueue.isEmpty()) {
+		    wordNode tmp = new wordNode(first.wordQueue.poll(), end, dictionary);
+            wordTree.add(tmp);
+        }
+        /* Beginning of BFS tree */
+        int i = 0;
+        while(!wordTree.get(i).wordQueue.isEmpty() || !wordTree.isEmpty()){
+            if(wordTree.get(i).wordQueue.isEmpty()){
+            	i = i + 1;
+            	if(i == wordTree.size()){
+            		break;
+				}
+			}else {
+				wordNode tmp = new wordNode(wordTree.get(i).wordQueue.poll(), end, dictionary);
+				wordTree.add(tmp);
 			}
-		}
+
+        }
+
 	}
 	
 	public static void initialize() {
