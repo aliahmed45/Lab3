@@ -39,43 +39,9 @@ public class Main {
 		}
 		initialize();
 		// TODO methods to read in words, output ladder
-
-		String start = "smart";
-		String end   = "money";
-		dictionary.remove(start.toUpperCase());
-		ArrayList<wordNode> wordTree = new ArrayList<>();
-		wordNode first = new wordNode(start, end, dictionary);
-		while(!first.wordQueue.isEmpty()) {
-		    wordNode tmp = new wordNode(first.wordQueue.poll(), end, dictionary);
-		    tmp.parentNode = first;
-            wordTree.add(tmp);
-        }
-        /* Beginning of BFS tree */
-        int i = 0;
-        while(!wordTree.get(i).wordQueue.isEmpty() || !wordTree.isEmpty()){
-            if(wordTree.get(i).wordQueue.isEmpty()){
-            	i = i + 1;
-            	if(i == wordTree.size()){
-            		break;
-				}
-			}else {
-				wordNode tmp = new wordNode(wordTree.get(i).wordQueue.poll(), end, dictionary);
-				tmp.parentNode = wordTree.get(i);
-				System.out.println(tmp.parentNode.currentWord);
-                wordTree.add(tmp);
-				if(tmp.flag){
-				    break;
-                }
-			}
-        }
-        wordNode tmp = wordTree.get(i);
-        System.out.println("End Word:" + tmp.currentWord);
-        System.out.println("Word before: " + tmp.parentNode.currentWord);
-        while(tmp.parentNode != first){
-            ladder.add(tmp.currentWord);
-            tmp = wordTree.get(wordTree.indexOf(tmp.parentNode));
-        }
-        printLadder(ladder);
+		String start = "money";
+		String end   = "smart";
+		getWordLadderBFS(start, end);
 	}
 	
 	public static void initialize() {
@@ -109,10 +75,50 @@ public class Main {
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		
 		// TODO some code
-		Set<String> dict = makeDictionary();
+		//Set<String> dict = makeDictionary();
 		// TODO more code
-		
-		return null; // replace this line later with real return
+
+		dictionary.remove(start.toUpperCase());
+		ArrayList<wordNode> wordTree = new ArrayList<>();
+		wordNode first = new wordNode(start, end, dictionary);
+		while(!first.wordQueue.isEmpty()) {
+			wordNode tmp = new wordNode(first.wordQueue.poll(), end, dictionary);
+			tmp.parentNode = first;
+			wordTree.add(tmp);
+		}
+        /* Beginning of BFS tree */
+		int i = 0;
+		while(!wordTree.get(i).wordQueue.isEmpty() || !wordTree.isEmpty()){
+			if(wordTree.get(i).wordQueue.isEmpty()){
+				i = i + 1;
+				if(i == wordTree.size()){
+					break;
+				}
+			}else {
+				wordNode tmp = new wordNode(wordTree.get(i).wordQueue.poll(), end, dictionary);
+				tmp.parentNode = wordTree.get(i);
+				//System.out.println(tmp.parentNode.currentWord);
+				wordTree.add(tmp);
+				if(tmp.flag){
+					ladder.add(end);
+					break;
+				}
+			}
+		}
+		wordNode tmp = wordTree.get(i);
+		System.out.println("End Word:" + tmp.currentWord);
+		System.out.println("Word before: " + tmp.parentNode.currentWord);
+		while(tmp.parentNode != first){
+			ladder.add(tmp.currentWord);
+			tmp = wordTree.get(wordTree.indexOf(tmp.parentNode));
+		}
+		ladder.add(tmp.currentWord);
+		ladder.add(start);
+		Collections.reverse(ladder);
+		dictionary.add(start.toUpperCase());
+
+		printLadder(ladder);
+		return ladder; // replace this line later with real return
 	}
     
 	
