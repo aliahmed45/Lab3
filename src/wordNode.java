@@ -13,14 +13,13 @@ public class wordNode{
         private static Set<String> dictionary;
 
         public wordNode(){}
-        public wordNode(String start, String end, int charOffset, Set<String> dictionary){
+        public wordNode(String start, String end, Set<String> dictionary){
 
         //Find all the words in the dicitonary  one letter away
         //Don't forget to avoid repeating words --> vistedWord
                 //System.out.println(currCharInd);
                 this.currentWord = start;
                 this.dictionary = dictionary;
-                this.currCharInd = charOffset;
                 //System.out.println(currCharInd);
                 System.out.println("Beginning Word is: " + start);
                 findNextWord(start, end);
@@ -31,7 +30,7 @@ public class wordNode{
                 if(word.equals(end)){
                     return;
                 }
-                int charNum = currCharInd;
+                int charNum = 0;
                 while(charNum<word.length()) {
                     StringBuilder tmp = new StringBuilder(word);
                     for (int i = 0; i < 25; i = i + 1) {

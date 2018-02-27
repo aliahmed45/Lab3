@@ -39,23 +39,17 @@ public class Main {
 
 		String start = "money";
 		String end   = "smart";
-		int charOffset = 0;
-		wordNode first = new wordNode(start, end, charOffset, dictionary);
+		wordNode first = new wordNode(start, end, dictionary);
 		wordNode second = new wordNode();
-		charOffset = 1;
-		
+
 		while(!first.currentWord.equals(end)) {
-			if(charOffset > (start.length()) ){
-				System.out.println("Break out of loop");
-				break;
-			}
+
 			if (!first.wordQueue.isEmpty()) {
-				second = new wordNode(first.wordQueue.poll(), end, charOffset, dictionary);
+				second = new wordNode(first.wordQueue.poll(), end, dictionary);
+
 			} else{
-				charOffset = charOffset % start.length();
-				second = new wordNode(second.wordQueue.poll(), end, charOffset, dictionary);
+				second = new wordNode(second.wordQueue.poll(), end, dictionary);
 			}
-			charOffset = charOffset + 1;
 		}
 	}
 	
