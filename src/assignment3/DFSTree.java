@@ -1,4 +1,4 @@
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+package assignment3;
 
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -51,8 +51,6 @@ public class DFSTree {
             ladder.add(end);
             return ladder;
         } else {
-            ladder.add(start);
-            ladder.add(end);
             return ladder;
         }
     }

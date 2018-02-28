@@ -1,3 +1,5 @@
+package assignment3;
+
 import java.util.*;
 
 public class wordNode{

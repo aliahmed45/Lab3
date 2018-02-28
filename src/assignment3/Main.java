@@ -1,9 +1,9 @@
-/* WORD LADDER Main.java
+package assignment3;/* WORD LADDER Main.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
+ * Ali Ahmed
+ * ama4943
+ * 15455
  * <Student2 Name>
  * <Student2 EID>
  * <Student2 5-digit Unique No.>
@@ -12,8 +12,6 @@
  * Fall 2017
  */
 
-
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.*;
 import java.io.*;
@@ -24,9 +22,7 @@ public class Main {
 
 	public static ArrayList<String> input = new ArrayList<>();
 	public static Set<String> dictionary;
-	public static ArrayList<String> ladderBFS = new ArrayList<>();
-	public static ArrayList<String> ladderDFS = new ArrayList<>();
-	
+
 	public static void main(String[] args) throws Exception {
 		
 		Scanner kb;	// input Scanner for commands
@@ -45,8 +41,8 @@ public class Main {
 		String end   = input.get(1);
 		initialize();
 		// TODO methods to read in words, output ladder
-		getWordLadderBFS(start, end);
-		getWordLadderDFS(start, end);
+		ArrayList<String> ladderBFS = getWordLadderBFS(start, end);
+		ArrayList<String> ladderDFS = getWordLadderDFS(start, end);
 		printLadder(ladderBFS);
 		printLadder(ladderDFS);
 	}
@@ -73,7 +69,7 @@ public class Main {
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		
+		ArrayList<String> ladderDFS = new ArrayList<>();
 		// Returned list should be ordered start to end.  Include start and end.
 		// If ladder is empty, return list with just start and end.
 		DFSTree dfsTree = new DFSTree(start, end, dictionary);
@@ -82,10 +78,13 @@ public class Main {
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
+		ArrayList<String> ladderBFS = new ArrayList<>();
 		int flag = 0;
 		dictionary.remove(start.toUpperCase());
 		ArrayList<wordNode> wordTree = new ArrayList<>();
 		wordNode first = new wordNode(start, end, dictionary);
+
+		wordTree.add(first); // added code
 
 		if(first.wordQueue.isEmpty()){
 			ladderBFS.add((start));
@@ -99,7 +98,7 @@ public class Main {
 		}
 
         /* Beginning of BFS tree */
-		int i = 0;
+		int i = 1; // int i = 0; former code
 		while(!wordTree.get(i).wordQueue.isEmpty() || !wordTree.isEmpty()){
 			if(wordTree.get(i).wordQueue.isEmpty()){
 				i = i + 1;

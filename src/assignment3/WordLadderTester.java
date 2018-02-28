@@ -1,3 +1,5 @@
+package assignment3;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -68,7 +70,7 @@ public class WordLadderTester {
 		assertTrue(res.size() < 6);
 	}
 
-	@Test(timeout = 30000)
+	@Test()//timeout = 30000)
 	public void testDFS1() {
 		ArrayList<String> res = Main.getWordLadderDFS("hello", "cells");
 		if (res != null) {
