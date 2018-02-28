@@ -21,8 +21,11 @@ import java.io.*;
 public class Main {
 	
 	// static variables and constants only here.
+
+	public static ArrayList<String> input = new ArrayList<>();
 	public static Set<String> dictionary;
-	public static ArrayList<String> ladder = new ArrayList<>();
+	public static ArrayList<String> ladderBFS = new ArrayList<>();
+	public static ArrayList<String> ladderDFS = new ArrayList<>();
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -37,11 +40,15 @@ public class Main {
 			kb = new Scanner(System.in);// default input from Stdin
 			ps = System.out;			// default output to Stdout
 		}
+		parse(kb);
+		String start = input.get(0);
+		String end   = input.get(1);
 		initialize();
 		// TODO methods to read in words, output ladder
-		String start = "money";
-		String end   = "smart";
 		getWordLadderBFS(start, end);
+		getWordLadderDFS(start, end);
+		printLadder(ladderBFS);
+		printLadder(ladderDFS);
 	}
 	
 	public static void initialize() {
@@ -57,7 +64,11 @@ public class Main {
 	 * If command is /quit, return empty ArrayList. 
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
-		// TO DO
+		input.add(keyboard.next());
+		while (!input.contains("/quit")) {
+			input.add(keyboard.next());
+			//System.out.println(input);
+		}
 		return null;
 	}
 	
@@ -65,28 +76,28 @@ public class Main {
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// If ladder is empty, return list with just start and end.
-		// TODO some code
-		//Set<String> dict = makeDictionary();
-		// TODO more code
 		DFSTree dfsTree = new DFSTree(start, end, dictionary);
-		
-		return null; // replace this line later with real return
+		ladderDFS = dfsTree.startTree(start);
+		return ladderDFS; // replace this line later with real return
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		
-		// TODO some code
-		//Set<String> dict = makeDictionary();
-		// TODO more code
-
+		int flag = 0;
 		dictionary.remove(start.toUpperCase());
 		ArrayList<wordNode> wordTree = new ArrayList<>();
 		wordNode first = new wordNode(start, end, dictionary);
-		while(!first.wordQueue.isEmpty()) {
-			wordNode tmp = new wordNode(first.wordQueue.poll(), end, dictionary);
-			tmp.parentNode = first;
-			wordTree.add(tmp);
+
+		if(first.wordQueue.isEmpty()){
+			ladderBFS.add((start));
+			ladderBFS.add((end));
+			return ladderBFS;
 		}
+		while (!first.wordQueue.isEmpty()) {
+				wordNode tmp = new wordNode(first.wordQueue.poll(), end, dictionary);
+				tmp.parentNode = first;
+				wordTree.add(tmp);
+		}
+
         /* Beginning of BFS tree */
 		int i = 0;
 		while(!wordTree.get(i).wordQueue.isEmpty() || !wordTree.isEmpty()){
@@ -98,33 +109,42 @@ public class Main {
 			}else {
 				wordNode tmp = new wordNode(wordTree.get(i).wordQueue.poll(), end, dictionary);
 				tmp.parentNode = wordTree.get(i);
-				//System.out.println(tmp.parentNode.currentWord);
 				wordTree.add(tmp);
 				if(tmp.flag){
-					ladder.add(end);
+					ladderBFS.add(end);
+					flag = 1;
 					break;
 				}
 			}
 		}
-		wordNode tmp = wordTree.get(i);
-		System.out.println("End Word:" + tmp.currentWord);
-		System.out.println("Word before: " + tmp.parentNode.currentWord);
-		while(tmp.parentNode != first){
-			ladder.add(tmp.currentWord);
-			tmp = wordTree.get(wordTree.indexOf(tmp.parentNode));
+		if(flag == 1){
+		wordNode wordInLadder = wordTree.get(i);
+		while(wordInLadder.parentNode != first){
+			ladderBFS.add(wordInLadder.currentWord);
+			wordInLadder = wordTree.get(wordTree.indexOf(wordInLadder.parentNode));
 		}
-		ladder.add(tmp.currentWord);
-		ladder.add(start);
-		Collections.reverse(ladder);
+		ladderBFS.add(wordInLadder.currentWord);
+		ladderBFS.add(start);
+		Collections.reverse(ladderBFS);
 		dictionary.add(start.toUpperCase());
-
-		printLadder(ladder);
-		return ladder; // replace this line later with real return
+		}else {
+			ladderBFS.add(start);
+			ladderBFS.add(end);
+			//Collections.reverse(ladderBFS);
+		}
+		return ladderBFS; // replace this line later with real return
 	}
     
 	
 	public static void printLadder(ArrayList<String> ladder) {
-        System.out.println(ladder);
+		if(ladder.size()>2){
+			System.out.printf("a %d-rung word ladder exists between smart and money.\n", ladder.size());
+			for(int i = 0; i < ladder.size(); i = i + 1){
+				System.out.println(ladder.get(i));
+			}
+		}else{
+			System.out.println("no word ladder can be found between " + ladder.get(0) + " and " + ladder.get(1) + ".");
+		}
 	}
 	// TODO
 	// Other private static methods here
